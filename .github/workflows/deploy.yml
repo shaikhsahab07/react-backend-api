@@ -15,7 +15,7 @@ jobs:
         run: echo "${{ secrets.testing.DOCKER_HUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
      
   job02-test:
-    needs: logins
+    needs: job01-logins
     environment: testing
     runs-on: ubuntu-latest
     container:
@@ -44,7 +44,7 @@ jobs:
           echo "MONGODB_USERNAME: $MONGODB_USERNAME"
 
   job03-deploy:
-    needs: test
+    needs: job02-test
     environment: testing
     runs-on: ubuntu-latest
     container:
