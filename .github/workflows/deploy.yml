@@ -12,16 +12,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Docker Hub Login
-        run: echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
-      - name: Pull nodebackend:v1.0 image
-        run: docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/nodebackend:v1.0
-
+        run: echo "${{ secrets.testing.DOCKER_HUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
+     
   job02-test:
     needs: logins
     environment: testing
     runs-on: ubuntu-latest
     container:
-      image: ${{ secrets.DOCKER_HUB_USERNAME }}/nodebackend:v1.0
+      image: ${{ secrets.testing.DOCKER_HUB_USERNAME }}/nodebackend:v1.0
     env:
       PORT: 8080
     steps:
@@ -44,9 +42,10 @@ jobs:
 
   job03-deploy:
     needs: test
+    environment: testing
     runs-on: ubuntu-latest
     container:
-      image: ${{ secrets.DOCKER_HUB_USERNAME }}/nodebackend:v1.0
+      image: ${{ secrets.testing.DOCKER_HUB_USERNAME }}/nodebackend:v1.0
     steps:
       - name: Output information
         env:
