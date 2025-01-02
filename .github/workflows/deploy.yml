@@ -11,9 +11,12 @@ jobs:
   job01-logins:
     runs-on: ubuntu-latest
     steps:
-      - name: Docker Hub Login
-        run: echo "${{ secrets.testing.DOCKER_HUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
-     
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_HUB_PASSWORD }}
+  
   job02-test:
     needs: job01-logins
     environment: testing
