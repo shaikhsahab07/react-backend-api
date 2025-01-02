@@ -19,7 +19,10 @@ jobs:
     environment: testing
     runs-on: ubuntu-latest
     container:
-      image: ${{ secrets.testing.DOCKER_HUB_USERNAME }}/nodebackend:v1.0
+      image: shoebsk233/nodejs-ha07:v1.0
+      credentials:
+        username: ${{ secrets.DOCKER_HUB_USERNAME }}
+        password: ${{ secrets.DCOKER_HUB_PASSWORD }}
     env:
       PORT: 8080
     steps:
@@ -45,7 +48,10 @@ jobs:
     environment: testing
     runs-on: ubuntu-latest
     container:
-      image: ${{ secrets.testing.DOCKER_HUB_USERNAME }}/nodebackend:v1.0
+      image: shoebsk233/nodejs-ha07:v1.0
+      credentials:
+        username: ${{ secrets.DOCKER_HUB_USERNAME }}
+        password: ${{ secrets.DCOKER_HUB_PASSWORD }}
     steps:
       - name: Output information
         env:
