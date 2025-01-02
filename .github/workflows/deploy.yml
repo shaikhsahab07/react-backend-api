@@ -8,16 +8,21 @@ env:
   CACHE_KEY: node-deps
   MONGODB_DB_NAME: gha-demo
 jobs:
-  test:
+  job01-logins:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Docker Hub Login
+        run: echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
+      - name: Pull nodebackend:v1.0 image
+        run: docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/nodebackend:v1.0
+
+  job02-test:
+    needs: logins
     environment: testing
     runs-on: ubuntu-latest
     container:
-     image: node:16
+      image: ${{ secrets.DOCKER_HUB_USERNAME }}/nodebackend:v1.0
     env:
-      MONGODB_CONNECTION_PROTOCOL: mongodb+srv
-      MONGODB_CLUSTER_ADDRESS: cluster0.3hnou.mongodb.net
-      MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}
-      MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
       PORT: 8080
     steps:
       - name: Get Code
@@ -29,18 +34,19 @@ jobs:
           key: ${{ env.CACHE_KEY }}-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
         run: npm ci
-      - name: Run server
-        run: npm start & npx wait-on http://127.0.0.1:$PORT 
+      - name: Wait for server to be available
+        run: npx wait-on http://127.0.0.1:$PORT
       - name: Run tests
         run: npm test
       - name: Output information
         run: |
           echo "MONGODB_USERNAME: $MONGODB_USERNAME"
-  deploy:
+
+  job03-deploy:
     needs: test
     runs-on: ubuntu-latest
     container:
-     image: node:16
+      image: ${{ secrets.DOCKER_HUB_USERNAME }}/nodebackend:v1.0
     steps:
       - name: Output information
         env:
