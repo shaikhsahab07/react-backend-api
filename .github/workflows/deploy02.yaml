@@ -10,7 +10,7 @@ env:
   MONGODB_CLUSTER_ADDRESS: mongodb
   MONGODB_USERNAME: root
   MONGODB_PASSWORD: nierdre123
-  PORT:8080
+  PORT: 8080
 jobs:  
   job01-test:
     environment: testing
