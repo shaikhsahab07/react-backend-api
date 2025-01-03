@@ -13,7 +13,7 @@ jobs:
     environment: testing
     runs-on: ubuntu-latest
     container:
-      image: shoebsk233/nodejs-ha07:v1.0
+      image: shoebsk233/nodebackendapi:v1.0
       credentials:
         username: ${{ secrets.DOCKER_HUB_USERNAME }}
         password: ${{ secrets.DOCKER_HUB_PASSWORD }}
@@ -38,7 +38,7 @@ jobs:
     environment: testing
     runs-on: ubuntu-latest
     container:
-      image: shoebsk233/nodejs-ha07:v1.0
+      image: shoebsk233/nodebackendapi:v1.0
       credentials:
         username: ${{ secrets.DOCKER_HUB_USERNAME }}
         password: ${{ secrets.DOCKER_HUB_PASSWORD }}
